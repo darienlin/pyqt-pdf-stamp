@@ -31,20 +31,25 @@ class OpticGardInvoiceHeader(QWidget):
 
         #choose file
         layout3 = QVBoxLayout()
+        self.fileLabel = QLabel('No File Selected')
+        self.fileLabel.setFixedHeight(15)
         chooseFileButton = QPushButton('Choose File')
         chooseFileButton.clicked.connect(self.open_pdf)
-        self.fileLabel = QLabel('No File Selected')
-        self.fileLabel.setFixedHeight(10)
         layout3.addWidget(self.fileLabel)
         layout3.addWidget(chooseFileButton)
-        #layout3.setSpacing(0)
         layout6.addLayout(layout3)
 
-        #output location
+        #output directory
         layout4 = QVBoxLayout()
-        label3 = QLabel('Output Location')
-        label3.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout6.addWidget(label3)
+        self.outputDir = QLabel('No Output Selected')
+        self.outputDir.setFixedHeight(15)
+        self.outputDir.setWordWrap(True)
+        chooseOutputDir = QPushButton('Choose Output Location')
+        chooseOutputDir.clicked.connect(self.output_dir)
+        layout4.addWidget(self.outputDir)
+        layout4.addWidget(chooseOutputDir)
+        layout6.addLayout(layout4)
+
 
 
         #invoice/sales selection
@@ -55,20 +60,26 @@ class OpticGardInvoiceHeader(QWidget):
 
 
 
-
-
         layout1.addLayout(layout2)
         layout2.addLayout(layout6)
 
         self.setLayout(layout1)
 
+    #function to opens the pdf user wants to stamp
     def open_pdf(self):
         fileName = QFileDialog.getOpenFileName(self,
             "Open PDF", "/Desktop", "PDF Files (*.pdf)")
 
         if fileName:
-            print(os.path.basename(fileName[0]))
             self.fileLabel.setText(f"Selected file: {os.path.basename(fileName[0])}")
+
+    #function to select the output directory
+    def output_dir(self):
+        folderpath = QFileDialog.getExistingDirectory(self, 'Select Folder')
+
+        if folderpath:
+            self.outputDir.setText(f"Selected Location: {folderpath}")
+
         
 
 class MainWindow(QMainWindow):
