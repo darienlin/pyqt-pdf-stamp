@@ -1,2 +1,2 @@
-# pyqt-test
-PyQt simple test. Will add image to any pdf you added in
+# pyqt-pdf-stamp
+Will stamp opticgard header over invoice and sales order pdf for opticgard
