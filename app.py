@@ -4,6 +4,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+from invoiceOrderPDFStamp.opticgardInvoice import stamp
+
 
 class OpticGardInvoiceHeader(QWidget):
     def __init__(self):
@@ -11,6 +13,9 @@ class OpticGardInvoiceHeader(QWidget):
 
         #variables
         self.fileName = ''
+        self.folderPath = ''
+        self.newName = 'output'
+        self.option = ''
 
         #title
         self.setWindowTitle("OpticGard Invoice Header")
@@ -51,10 +56,15 @@ class OpticGardInvoiceHeader(QWidget):
         layout6.addLayout(layout4)
 
 
+        #name of pdf
+        self.input = QLineEdit()
+        self.input.setPlaceholderText('Enter new file name here')
+        self.input.textChanged.connect(self.new_name)
+        layout6.addWidget(self.input)
+
 
         #invoice/sales selection
         layout5 = QVBoxLayout()
-        self.option = ''
 
         #creates group for radio buttons and sets the layout
         radioButtonGroup = QGroupBox("Select One")
@@ -76,6 +86,7 @@ class OpticGardInvoiceHeader(QWidget):
         layout6.addLayout(layout5)
 
         confirmationButton = QPushButton('Confirm')
+        confirmationButton.clicked.connect(self.stamp_pdf)
         layout6.addWidget(confirmationButton)
 
         #creates the layout format
@@ -87,23 +98,47 @@ class OpticGardInvoiceHeader(QWidget):
 
     #function to opens the pdf user wants to stamp
     def open_pdf(self):
-        fileName = QFileDialog.getOpenFileName(self,
+        self.fileName = QFileDialog.getOpenFileName(self,
             "Open PDF", "/Desktop", "PDF Files (*.pdf)")
 
-        if fileName:
-            self.fileLabel.setText(f"Selected file: {os.path.basename(fileName[0])}")
+        if self.fileName:
+            self.fileLabel.setText(f"Selected file: {os.path.basename(self.fileName[0])}")
+            self.fileName = self.fileName[0]
 
     #function to select the output directory
     def output_dir(self):
-        folderpath = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        self.folderPath = QFileDialog.getExistingDirectory(self, 'Select Folder')
 
-        if folderpath:
-            self.outputDir.setText(f"Selected Location: {folderpath}")
+        if self.folderPath:
+            self.outputDir.setText(f"Selected Location: {self.folderPath}")
+        print(self.folderPath)
 
-    def find_selected(self, button):
+    #function to keep track of new name
+    def new_name(self):
+        if self.newName is not None:
+            self.newName = self.input.text()
+
+    #find the radio button choice selected
+    def find_selected(self):
         if self.sender().isChecked():
             self.option = self.sender().text()
             print(self.option)
+
+    #calls opticgardInvoice.py
+    def stamp_pdf(self):
+        sales = False
+        if self.option == 'Sales Order':
+            sales = True
+
+        folderFilePath = self.folderPath + '/' + self.newName + '.pdf'
+
+        try:
+            stamp(self.fileName, folderFilePath, sales)
+        except Exception as e:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error!")
+            dlg.setText(str(e))
+            dlg.exec()
 
 
         
