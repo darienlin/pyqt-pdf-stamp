@@ -121,6 +121,10 @@ class OpticGardInvoiceHeader(QWidget):
 
         try:
             stamp(self.fileName, folderFilePath, sales)
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("PDF Finished!")
+            dlg.setText('PDF has sucessfully been modified')
+            dlg.exec()
         except Exception as e:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error!")
