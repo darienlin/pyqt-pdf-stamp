@@ -19,20 +19,11 @@ class OpticGardInvoiceHeader(QWidget):
 
         #title
         self.setWindowTitle("OpticGard Invoice Header")
-        layout1 = QVBoxLayout()
+        layout6 = QVBoxLayout()
         label = QLabel('OpticGard Header Scripts')
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         label.setFixedHeight(25)
-        layout1.addWidget(label)
-
-        #drag and drop
-        layout2 = QHBoxLayout()
-        label2 = QLabel('Drag and drop pdf file here')
-        label2.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout2.addWidget(label2)
-
-        #layout for right side
-        layout6 = QVBoxLayout()
+        layout6.addWidget(label)
 
         #choose file
         layout3 = QVBoxLayout()
@@ -89,12 +80,8 @@ class OpticGardInvoiceHeader(QWidget):
         confirmationButton.clicked.connect(self.stamp_pdf)
         layout6.addWidget(confirmationButton)
 
-        #creates the layout format
-        layout1.addLayout(layout2)
-        layout2.addLayout(layout6)
-
         #sets the entire layout to the window
-        self.setLayout(layout1)
+        self.setLayout(layout6)
 
     #function to opens the pdf user wants to stamp
     def open_pdf(self):
