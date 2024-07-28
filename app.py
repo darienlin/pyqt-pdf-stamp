@@ -54,15 +54,35 @@ class OpticGardInvoiceHeader(QWidget):
 
         #invoice/sales selection
         layout5 = QVBoxLayout()
-        label3 = QLabel('Invoice/Sales Order')
-        label3.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout6.addWidget(label3)
+        self.option = ''
 
+        #creates group for radio buttons and sets the layout
+        radioButtonGroup = QGroupBox("Select One")
+        radioButtonLayout = QVBoxLayout()
+        radioButtonGroup.setLayout(radioButtonLayout)
 
+        #creates the radio buttons
+        invoiceSelection = QRadioButton('Invoice', self)
+        salesSelection = QRadioButton('Sales Order', self)
 
+        #connects the radio buttons to the function
+        invoiceSelection.clicked.connect(self.find_selected)
+        salesSelection.clicked.connect(self.find_selected)
+
+        #adds respective widgets to layouts
+        layout5.addWidget(radioButtonGroup)
+        radioButtonLayout.addWidget(invoiceSelection)
+        radioButtonLayout.addWidget(salesSelection)
+        layout6.addLayout(layout5)
+
+        confirmationButton = QPushButton('Confirm')
+        layout6.addWidget(confirmationButton)
+
+        #creates the layout format
         layout1.addLayout(layout2)
         layout2.addLayout(layout6)
 
+        #sets the entire layout to the window
         self.setLayout(layout1)
 
     #function to opens the pdf user wants to stamp
@@ -79,6 +99,12 @@ class OpticGardInvoiceHeader(QWidget):
 
         if folderpath:
             self.outputDir.setText(f"Selected Location: {folderpath}")
+
+    def find_selected(self, button):
+        if self.sender().isChecked():
+            self.option = self.sender().text()
+            print(self.option)
+
 
         
 
@@ -109,7 +135,7 @@ class MainWindow(QMainWindow):
     def show_opticgard_invoice_header(self, checked):
         if self.invoiceWindow == None:
             self.invoiceWindow = OpticGardInvoiceHeader()
-            self.invoiceWindow.resize(700, 500)
+            self.invoiceWindow.resize(500, 300)
             self.invoiceWindow.show()
         else:
             self.invoiceWindow.close()
