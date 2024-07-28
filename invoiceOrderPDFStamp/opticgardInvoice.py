@@ -11,6 +11,7 @@ def stamp(
     page_indices: Union[None, List[int]] = None,
 ):
     stamp_page = PdfReader('./invoiceOrderPDFStamp/opticgardInvoiceHeader.pdf').pages[0]
+    whiteSpace = PdfReader('./invoiceOrderPDFStamp/whiteSpace.pdf').pages[0]
 
     writer = PdfWriter()
     # page_indices can be a List(array) of page, tuples are for range definition
@@ -30,6 +31,13 @@ def stamp(
             stamp_page,
             Transformation().scale(scale).translate(tx=translate_x, ty=translate_y)
         )
+
+        if not sales:
+            content_page.merge_transformed_page(
+                whiteSpace,
+                Transformation().scale(1.3).translate(tx=29, ty=-10)
+
+            )
 
 
     writer.write(pdf_result)
