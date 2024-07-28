@@ -98,7 +98,6 @@ class OpticGardInvoiceHeader(QWidget):
 
         if self.folderPath:
             self.outputDir.setText(f"Selected Location: {self.folderPath}")
-        print(self.folderPath)
 
     #function to keep track of new name
     def new_name(self):
@@ -109,7 +108,6 @@ class OpticGardInvoiceHeader(QWidget):
     def find_selected(self):
         if self.sender().isChecked():
             self.option = self.sender().text()
-            print(self.option)
 
     #calls opticgardInvoice.py
     def stamp_pdf(self):
@@ -172,6 +170,7 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 
 window = MainWindow()
+window.resize(300, 300)
 window.show()
 
 app.exec()

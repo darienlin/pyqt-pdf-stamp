@@ -1,2 +1,6 @@
 venv/
 __pycache__/
+build/
+dist/
+app.spec
+optic-gard_logo_icon.ico
