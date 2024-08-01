@@ -35,7 +35,7 @@ def stamp(
         if not sales:
             content_page.merge_transformed_page(
                 whiteSpace,
-                Transformation().scale(1.3).translate(tx=29, ty=-10)
+                Transformation().scale(1.5).translate(tx=25, ty=-115)
 
             )
 
